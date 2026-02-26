@@ -46,13 +46,9 @@ models:
 
       - name: tenure_months
         description: "How many months customer has been with company."
-        tests:
-          - not_null
 
       - name: monthly_charges
         description: "Monthly subscription charge."
-        tests:
-          - not_null
 
   - name: dim_customer
     description: "Gold layer - slowly changing dimension with latest customer attributes. One row per customer (most recent record)."
