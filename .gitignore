@@ -1,0 +1,32 @@
+# dbt directories and files
+target/
+dbt_packages/
+logs/
+.dbt/
+
+# dbt profiles
+profiles.yml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+ENV/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.dbtignore
