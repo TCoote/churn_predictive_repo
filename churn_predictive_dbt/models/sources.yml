@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: churn_bronze
+    database: demosuitedev-raw
+    schema: bronze
+    tables:
+      - name: churn_raw
+        description: "Raw churn monthly snapshot data uploaded from client CSV"

@@ -1,0 +1,22 @@
+select
+  cast(as_of_date as date) as as_of_date,
+  customer_id,
+  customer_name,
+  email,
+  upper(trim(segment)) as segment,
+  upper(trim(region)) as region,
+  product_tier,
+  contract_type,
+  payment_method,
+  case when lower(has_autopay) in ('true','1','yes','y') then true else false end as has_autopay,
+  try_cast(tenure_months as int) as tenure_months,
+  try_cast(monthly_charges as decimal(10,2)) as monthly_charges,
+  try_cast(total_charges as decimal(12,2)) as total_charges,
+  try_cast(num_logins_30d as bigint) as num_logins_30d,
+  try_cast(support_tickets_90d as bigint) as support_tickets_90d,
+  try_cast(last_login_days_ago as int) as last_login_days_ago,
+  try_cast(nps_score as int) as nps_score,
+  try_cast(csat_score as decimal(5,2)) as csat_score,
+  try_cast(is_active as boolean) as is_active,
+  try_cast(churn_next_30d as boolean) as churn_next_30d
+from {{ source('churn_bronze','churn_raw') }}

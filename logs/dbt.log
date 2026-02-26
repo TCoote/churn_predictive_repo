@@ -1,0 +1,27 @@
+[0m11:56:39.113039 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000021C92ED8D70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000021C9402BED0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000021C9402BB10>]}
+
+
+============================== 11:56:39.123508 | 63cc2965-128b-44b9-bc05-7a7bc8e94240 ==============================
+[0m11:56:39.123508 [info ] [MainThread]: Running with dbt=1.11.2
+[0m11:56:39.124745 [debug] [MainThread]: running dbt with arguments {'log_format': 'default', 'cache_selected_only': 'False', 'fail_fast': 'False', 'target_path': 'None', 'no_print': 'None', 'use_colors': 'True', 'printer_width': '80', 'send_anonymous_usage_stats': 'True', 'use_experimental_parser': 'False', 'invocation_command': 'dbt init churn_predictive_dbt', 'warn_error': 'None', 'indirect_selection': 'eager', 'quiet': 'False', 'static_parser': 'True', 'empty': 'None', 'introspect': 'True', 'profiles_dir': 'C:\\Users\\TaraCoote\\.dbt', 'log_path': 'logs', 'write_json': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'partial_parse': 'True', 'debug': 'False', 'log_cache_events': 'False', 'version_check': 'True'}
+[0m11:56:39.174725 [debug] [MainThread]: Starter project path: C:\dev\adventureworks_dbt_training\.venv\Lib\site-packages\dbt\include\starter_project
+[0m11:56:39.228558 [info ] [MainThread]: 
+Your new dbt project "churn_predictive_dbt" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m11:56:39.229772 [info ] [MainThread]: Setting up your profile.
+[0m12:01:01.520740 [debug] [MainThread]: Spark adapter: Setting pyhive.hive logging to ERROR
+[0m12:01:01.521329 [debug] [MainThread]: Spark adapter: Setting thrift.transport logging to ERROR
+[0m12:01:01.521705 [debug] [MainThread]: Spark adapter: Setting thrift.protocol logging to ERROR

@@ -1,0 +1,156 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: "Raw layer - unmodified source data from the churn system"
+    meta:
+      owner: data_engineering
+      tier: bronze
+    database: "{{ target.catalog }}"
+    schema: bronze
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+    tables:
+      - name: churn_raw
+        description: "Seeded churn dataset for demo purposes. Contains 600 customer records with churn labels."
+        meta:
+          tier: bronze
+          refresh_frequency: daily
+
+models:
+  - name: stg_churn
+    description: "Silver layer - cleaned and standardized churn dataset. Handles missing values, casts types, and normalizes text fields."
+    meta:
+      owner: analytics_team
+      tier: silver
+      contains_pii: false
+      refresh_frequency: daily
+    columns:
+      - name: customer_id
+        description: "Unique identifier for a customer."
+        tests:
+          - not_null
+
+      - name: churn_next_30d
+        description: "Target label: 1 = churned, 0 = not churned."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, true, false]
+
+      - name: as_of_date
+        description: "Date when customer metrics were recorded."
+        tests:
+          - not_null
+
+      - name: tenure_months
+        description: "How many months customer has been with company."
+        tests:
+          - not_null
+
+      - name: monthly_charges
+        description: "Monthly subscription charge."
+        tests:
+          - not_null
+
+  - name: dim_customer
+    description: "Gold layer - slowly changing dimension with latest customer attributes. One row per customer (most recent record)."
+    meta:
+      owner: analytics_team
+      tier: gold
+      entity: customer
+      materialization: table
+    columns:
+      - name: customer_id
+        description: "Unique identifier for a customer."
+        tests:
+          - not_null
+          - unique
+          # Relationship test: customer_id must exist in staging
+          - relationships:
+              to: ref('stg_churn')
+              field: customer_id
+
+      - name: customer_name
+        description: "Customer full name."
+        tests:
+          - not_null
+
+      - name: email
+        description: "Customer email address."
+        tests:
+          - not_null
+
+      - name: segment
+        description: "Customer business segment (e.g., Enterprise, SMB, Startup)."
+        tests:
+          - not_null
+
+      - name: region
+        description: "Geographic region where customer is located."
+        tests:
+          - not_null
+
+  - name: dim_date
+    description: "Gold layer - date dimension for time-series analysis. Contains date parts (year, month, quarter) for aggregations."
+    meta:
+      owner: analytics_team
+      tier: gold
+      entity: date
+      materialization: table
+    columns:
+      - name: as_of_date
+        description: "Calendar date."
+        tests:
+          - not_null
+          - unique
+
+      - name: year
+        description: "Calendar year (e.g., 2023, 2024)."
+        tests:
+          - not_null
+
+      - name: month_num
+        description: "Month as number 1-12."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+      - name: month_name
+        description: "Month as text (January, February, etc)."
+        tests:
+          - not_null
+
+  - name: fct_customer_month
+    description: "Gold layer - fact table of customer metrics by month. Combines behavioral, financial, and satisfaction metrics for churn prediction and BI."
+    meta:
+      owner: analytics_team
+      tier: gold
+      entity: customer_activity
+      materialization: table
+      use_case: churn_prediction
+    columns:
+      - name: customer_id
+        description: "Unique identifier for a customer."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+
+      - name: as_of_date
+        description: "Date when metrics were recorded."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: as_of_date
+
+      - name: churn_next_30d
+        description: "Target variable: 1 = churned in next 30 days, 0 = did not churn."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, true, false]
