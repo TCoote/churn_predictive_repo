@@ -33,6 +33,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   churn_predictive_dbt:
     processed:
+      +database: demosuitedev-processed  # Silver layer in processed catalog
       +schema: silver
     modelled:
+      +database: demosuitedev-modelled   # Gold layer in modelled catalog
       +schema: gold

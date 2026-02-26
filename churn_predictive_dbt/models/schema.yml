@@ -6,7 +6,7 @@ sources:
     meta:
       owner: data_engineering
       tier: bronze
-    database: "{{ target.catalog }}"
+    database: demosuitedev-raw  # Bronze data in raw catalog
     schema: bronze
     freshness:
       warn_after: {count: 24, period: hour}
