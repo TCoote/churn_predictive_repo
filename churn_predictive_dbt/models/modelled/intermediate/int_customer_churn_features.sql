@@ -43,11 +43,15 @@ with customer_features as (
       else 'unknown'
     end as satisfaction_tier,
     
-    -- Pass through key metrics for downstream use
+    -- Pass through all raw metrics for downstream use
+    num_logins_30d,
+    support_tickets_90d,
+    last_login_days_ago,
     tenure_months,
     monthly_charges,
-    support_tickets_90d,
+    total_charges,
     nps_score,
+    csat_score,
     is_active,
     churn_next_30d
     

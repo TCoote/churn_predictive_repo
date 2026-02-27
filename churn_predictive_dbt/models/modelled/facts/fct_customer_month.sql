@@ -18,10 +18,15 @@ select
     nps_score,
     cast(csat_score as int) as csat_score,
 
+    -- ENGINEERED FEATURES (from intermediate model)
+    login_frequency,
+    tenure_bucket,
+    satisfaction_tier,
+
     -- Active flag
     is_active,
 
     -- Target variable
     churn_next_30d
 
-from {{ ref('stg_churn') }}
+from {{ ref('int_customer_churn_features') }}
