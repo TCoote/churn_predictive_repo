@@ -37,4 +37,10 @@ models:
       +schema: silver
     modelled:
       +database: demosuitedev-modelled   # Gold layer in modelled catalog
-      +schema: gold
+      intermediate:
+        +schema: intermediate            # Intermediate models in separate schema
+        +materialized: view
+      dimensions:
+        +schema: gold
+      facts:
+        +schema: gold
